@@ -20,7 +20,7 @@ services:
       - PERSISTENTKEEPALIVE_PEERS=
       - LOG_CONFS=true
     volumes:
-      - /home/ubuntu/wireguard:/config
+      - /home/ubuntu/wireguard-selfhost:/config
       - /lib/modules:/lib/modules
     ports:
       - 51820:51820/udp
