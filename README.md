@@ -54,7 +54,7 @@ docker network inspect ip6vpn
 ### 3. Deploy WireGuard Using Docker Compose
 1. Clone this repository:
    ```bash
-   git clone https://github.com/chost-in/wireguard-selfhost/docker-compose.yaml
+   git clone https://github.com/chost-in/wireguard-selfhost
    cd wireguard-selfhost
    ```
  or
