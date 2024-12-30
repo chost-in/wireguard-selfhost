@@ -35,6 +35,8 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 # Add current user to Docker group
 sudo usermod -aG docker $USER
+exit
+
 
 ```
 **Note**: Log out and log back in to apply group changes.
@@ -50,7 +52,7 @@ docker network create \
   ip6vpn
 
 docker network inspect ip6vpn
-exit
+
 ```
 
 ### 3. Deploy WireGuard Using Docker Compose
