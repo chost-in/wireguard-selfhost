@@ -35,6 +35,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 # Add current user to Docker group
 sudo usermod -aG docker $USER
+
 ```
 **Note**: Log out and log back in to apply group changes.
 
@@ -46,9 +47,10 @@ Run the following commands to create an IPv6-enabled Docker network:
 docker network create \
   --ipv6 \
   --subnet fd7e:247e:2031::/64 \
-  ipv6net
+  ip6vpn
 
 docker network inspect ip6vpn
+exit
 ```
 
 ### 3. Deploy WireGuard Using Docker Compose
@@ -56,6 +58,7 @@ docker network inspect ip6vpn
    ```bash
    git clone https://github.com/chost-in/wireguard-selfhost
    cd wireguard-selfhost
+   
    ```
  or
 1. Create a folder with name `wireguard-selfhost` and create a nano file with name `docker-compose.yaml` in it.
@@ -83,7 +86,7 @@ docker network inspect ip6vpn
          - PERSISTENTKEEPALIVE_PEERS=
          - LOG_CONFS=true
        volumes:
-         - /home/ubuntu/wireguard:/config
+         - /home/ubuntu/wireguard-selfhost:/config
          - /lib/modules:/lib/modules
        ports:
          - 51820:51820/udp
@@ -111,9 +114,9 @@ docker network inspect ip6vpn
    docker compose up -d
    ```
 
-### 4. Configure Peers
-1. Navigate to the `peer1/` directory.
-2. Open `peer1.conf` and add the necessary IPv6 subnet details:
+### 4. Configuration Check
+1. Navigate to the `wg_confs/` directory.
+2. Open `wg0.conf` and add the necessary IPv6 subnet details:
    ```
    # By default, IPv4 subnet will be provisioned. Ensure IPv6 is added as follows:
    Address = 10.13.13.1, fd7e:247e:2031::2
