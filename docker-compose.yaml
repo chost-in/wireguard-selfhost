@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      # Replace the following environment variables as needed:
+      - PUID=1001              # User ID on the host system
+      - PGID=1001              # Group ID on the host system
+      - TZ=Asia/Calcutta       # Timezone
+      - SERVERURL=wg.tva.pw    # Replace with your server's domain or public IP
+      - SERVERPORT=51820       # Port number for WireGuard, you can change if it is already in use 
+      - PEERS=1                # Number of client peers to generate
+      - PEERDNS=1.1.1.1, 2606:4700:4700::1111 # DNS servers (IPv4 and IPv6 using cloudflare you can change if necessary)
+      - INTERNAL_SUBNET=10.13.13.0/24, fd7e:247e:2031::/64 # Internal subnets (IPv4 and IPv6 modify it as you need)
+      - ALLOWEDIPS=0.0.0.0/0, ::/0 # Allowed IPs for client traffic
+      - PERSISTENTKEEPALIVE_PEERS=
+      - LOG_CONFS=true
+    volumes:
+      - /home/ubuntu/wireguard:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+      - net.ipv4.conf.all.forwarding=1
+    restart: unless-stopped
+    networks:
+      - ip6vpn
+
+networks:
+  ip6vpn:
+    external: true
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.13.13.0/24" # Default IPv4 subnet
+        - subnet: "fd7e:247e:2031::/64" # Replace with your custom IPv6 subnet
